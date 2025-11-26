@@ -1,0 +1,255 @@
+:root {
+    --bg-color: #0a0a0a;
+    --text-color: #f0f0f0;
+    --accent-color: #ccff00;
+    /* Acid Lime */
+    --accent-secondary: #ff00ff;
+    /* Hot Pink */
+    --font-main: 'Space Grotesk', sans-serif;
+    --border-width: 2px;
+    --spacing-unit: 1rem;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Noise Overlay */
+.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Nav - The Corners */
+.nav-corners {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: var(--spacing-unit);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    z-index: 100;
+    pointer-events: none;
+    /* Let clicks pass through to canvas if needed, but buttons need pointer-events: auto */
+}
+
+.nav-logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+    pointer-events: auto;
+}
+
+.nav-menu {
+    display: flex;
+    gap: var(--spacing-unit);
+    pointer-events: auto;
+}
+
+/* Buttons */
+.btn-brutal {
+    background: transparent;
+    border: var(--border-width) solid var(--text-color);
+    color: var(--text-color);
+    padding: 0.5rem 1.5rem;
+    font-family: var(--font-main);
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.btn-brutal:hover {
+    background: var(--text-color);
+    color: var(--bg-color);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--accent-color);
+}
+
+.btn-brutal:active,
+.btn-brutal.active {
+    transform: translate(0, 0);
+    box-shadow: none;
+    background: var(--text-color);
+    color: var(--bg-color);
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.2s ease;
+}
+
+.btn-icon:hover {
+    transform: rotate(90deg);
+    color: var(--accent-color);
+}
+
+/* Hero - Typographic Wall */
+.hero-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+
+#visualizer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.4;
+}
+
+.timer-display {
+    font-size: clamp(4rem, 20vw, 25rem);
+    font-weight: 700;
+    line-height: 0.8;
+    letter-spacing: -0.08em;
+    text-align: center;
+    mix-blend-mode: exclusion;
+    user-select: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.timer-display:hover {
+    color: var(--accent-color);
+}
+
+.status-bar {
+    position: absolute;
+    bottom: var(--spacing-unit);
+    left: var(--spacing-unit);
+    right: var(--spacing-unit);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+}
+
+/* Modal */
+.modal-brutal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(10, 10, 10, 0.95);
+    border: var(--border-width) solid var(--text-color);
+    color: var(--text-color);
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px;
+    z-index: 200;
+    backdrop-filter: blur(10px);
+}
+
+.modal-brutal::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--text-color);
+    padding-bottom: 1rem;
+}
+
+.control-group {
+    margin-bottom: 2rem;
+}
+
+.control-group label {
+    display: block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+/* Custom Range Input */
+input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    background: transparent;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    background: var(--accent-color);
+    cursor: pointer;
+    margin-top: -8px;
+    border: 2px solid var(--bg-color);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    background: var(--text-color);
+}
+
+.social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.link-brutal {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.link-brutal:hover {
+    border-color: var(--accent-color);
+    background: rgba(204, 255, 0, 0.1);
+    color: var(--accent-color);
+    transform: translateX(5px);
+}
